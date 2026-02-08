@@ -420,7 +420,7 @@ export default function FlowFivePage() {
         setStatusMessage("Gift recommendation saved successfully.");
         setStep("result");
       },
-      "Generating strict gift recommendations...",
+      "Generating your gift recommendations...",
     );
   }
 
@@ -450,7 +450,7 @@ export default function FlowFivePage() {
       <FlowHeader
         eyebrow="Flow 5"
         title="Gift Finder Wizard"
-        subtitle="Strict triple-provider mode with mandatory partner profile and saved recommendation history."
+        subtitle="Get personalized gift recommendations with mandatory partner context and saved history."
         signedInEmail={user?.email ?? null}
         steps={[
           { label: "1. Auth", active: step === "auth" },
@@ -710,7 +710,7 @@ export default function FlowFivePage() {
       {step === "gift-input" && (
         <FlowSection data-testid="flow5-gift-panel">
           <h2>Gift Preferences</h2>
-          <p>Generate strict provider-backed gift recommendations.</p>
+          <p>Generate gift recommendations tailored to interests and budget.</p>
           <form className="grid-form" onSubmit={handleGiftFormSubmit} noValidate>
             <FlowStatus loading={loading} loadingMessage={loadingMessage} />
 

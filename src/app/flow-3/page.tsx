@@ -953,7 +953,7 @@ export default function FlowThreePage() {
           <h2 id="flow3-media-heading" tabIndex={-1}>
             Add Media Assets
           </h2>
-          <p>Use direct signed upload or manual asset registration fallback.</p>
+          <p>Upload directly or add existing Cloudinary asset details manually.</p>
           <FlowStatus loading={loading} loadingMessage={loadingMessage} />
 
           <div className="flow-media-split">

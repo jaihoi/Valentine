@@ -483,7 +483,7 @@ export default function FlowFourPage() {
         setStep("result");
         await pollSessionStatus(started.session_id, 0);
       },
-      "Starting strict hotline session...",
+      "Starting your hotline session...",
     );
   }
 
@@ -513,7 +513,7 @@ export default function FlowFourPage() {
       <FlowHeader
         eyebrow="Flow 4"
         title="AI Hotline Wizard"
-        subtitle="Strict Vapi mode with mandatory partner profile and webhook-backed status updates."
+        subtitle="Start an AI hotline session with a partner-aware scenario and live status updates."
         signedInEmail={user?.email ?? null}
         steps={[
           { label: "1. Auth", active: step === "auth" },

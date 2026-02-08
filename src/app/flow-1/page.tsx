@@ -409,7 +409,7 @@ export default function FlowOnePage() {
         await refreshFlowState();
         setStep("result");
       },
-      "Generating strict date plan...",
+      "Generating your date plan...",
     );
   }
 
@@ -439,7 +439,7 @@ export default function FlowOnePage() {
       <FlowHeader
         eyebrow="Flow 1"
         title="Onboarding + Date Plan"
-        subtitle="Strict provider mode: FastRouter + Perplexity + Firecrawl must all succeed."
+        subtitle="Plan a personalized date with partner profile context and saved history."
         signedInEmail={user?.email ?? null}
         steps={[
           { label: "1. Auth", active: step === "auth" },
@@ -753,10 +753,9 @@ export default function FlowOnePage() {
 
       {step === "date" && (
         <FlowSection data-testid="flow1-date-panel">
-          <h2 id="flow1-date-heading">Generate Strict Date Plan</h2>
+          <h2 id="flow1-date-heading">Generate Date Plan</h2>
           <p>
-            Flow 1 will fail fast if any required provider (FastRouter, Perplexity,
-            Firecrawl) fails.
+            Share preferences and get an itinerary with venue ideas and cost guidance.
           </p>
           <form className="grid-form" onSubmit={handleDateFormSubmit} noValidate>
             <FlowStatus loading={loading} loadingMessage={loadingMessage} />
@@ -995,7 +994,7 @@ export default function FlowOnePage() {
           <h3>Recent Flow 1 History</h3>
           {history.length === 0 ? (
             <p className="flow-empty">
-              No saved plans yet. Generate your first strict plan to populate history.
+              No saved plans yet. Generate your first plan to populate history.
             </p>
           ) : (
             <ul className="flow-ul" data-testid="flow1-history-list">

@@ -12,14 +12,14 @@ export default function Home() {
     {
       id: "flow-1",
       title: "Date Planner",
-      description: "City, budget, vibe, and strict provider-backed itinerary planning.",
+      description: "City, budget, and vibe-based itinerary planning in one guided flow.",
       enabled: true,
       cta: "Start Flow 1",
     },
     {
       id: "flow-2",
       title: "Love Letter + Voice",
-      description: "Generate romantic copy and strict voice assets in one guided path.",
+      description: "Generate romantic messages and matching voice notes in one guided path.",
       enabled: flow2Enabled,
       cta: "Start Flow 2",
     },
@@ -33,14 +33,14 @@ export default function Home() {
     {
       id: "flow-4",
       title: "AI Hotline",
-      description: "Start strict Vapi web-call sessions with partner-aware scenarios.",
+      description: "Start AI-powered web-call sessions with partner-aware scenarios.",
       enabled: flow4Enabled,
       cta: "Start Flow 4",
     },
     {
       id: "flow-5",
       title: "Gift Finder",
-      description: "Strict triple-provider recommendations with saved history.",
+      description: "Personalized gift recommendations with rationale and saved history.",
       enabled: flow5Enabled,
       cta: "Start Flow 5",
     },
@@ -66,8 +66,8 @@ export default function Home() {
             <span>Feature-flag aware launch matrix</span>
           </article>
           <article className="hero-stat">
-            <strong>Strict Provider Mode</strong>
-            <span>No silent fallback on guided production paths</span>
+            <strong>Reliable Guided Flows</strong>
+            <span>Consistent planning, content, cards, and hotline experiences</span>
           </article>
           <article className="hero-stat">
             <strong>Accounts + History</strong>
@@ -127,7 +127,7 @@ export default function Home() {
         </div>
         {flow1Only && (
           <p className="flow-note">
-            Focused mode is enabled (`NEXT_PUBLIC_FLOW1_ONLY=true`). Dashboard hides non-core module surfaces.
+            Focused mode is enabled. Dashboard shows only the current core flow.
           </p>
         )}
       </section>

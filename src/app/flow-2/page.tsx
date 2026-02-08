@@ -461,7 +461,7 @@ export default function FlowTwoPage() {
         await refreshFlowState();
         setStep("letter-result");
       },
-      "Generating strict love letter...",
+      "Generating your love letter...",
     );
   }
 
@@ -537,7 +537,7 @@ export default function FlowTwoPage() {
         await refreshFlowState();
         setStep("result");
       },
-      "Generating strict voice asset...",
+      "Generating your voice message...",
     );
   }
 
@@ -572,7 +572,7 @@ export default function FlowTwoPage() {
       <FlowHeader
         eyebrow="Flow 2"
         title="Love Letter + Voice"
-        subtitle="Strict provider mode: love-letter and voice both require provider success."
+        subtitle="Create a personalized letter and voice message with reusable partner profiles."
         signedInEmail={user?.email ?? null}
         steps={[
           { label: "1. Auth", active: step === "auth" },
@@ -867,8 +867,8 @@ export default function FlowTwoPage() {
 
       {step === "letter-input" && (
         <FlowSection data-testid="flow2-letter-input-panel">
-          <h2>Generate Strict Love Letter</h2>
-          <p>Flow 2 requires successful provider-backed letter generation.</p>
+          <h2>Generate Love Letter</h2>
+          <p>Create a personalized letter using your tone, length, and memories.</p>
           <form className="grid-form" onSubmit={handleLetterFormSubmit} noValidate>
             <FlowStatus loading={loading} loadingMessage={loadingMessage} />
 
@@ -1059,8 +1059,8 @@ export default function FlowTwoPage() {
 
       {step === "voice" && generatedLetter && (
         <FlowSection data-testid="flow2-voice-panel">
-          <h2>Generate Strict Voice Asset</h2>
-          <p>Voice generation must succeed through provider-backed synthesis and upload.</p>
+          <h2>Generate Voice Asset</h2>
+          <p>Turn the selected text into a playable voice message.</p>
 
           <form className="grid-form" onSubmit={handleVoiceFormSubmit} noValidate>
             <FlowStatus loading={loading} loadingMessage={loadingMessage} />
