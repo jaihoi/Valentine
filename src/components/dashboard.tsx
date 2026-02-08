@@ -56,6 +56,7 @@ export function Dashboard() {
   const flow3Enabled = process.env.NEXT_PUBLIC_FLOW3_ENABLED === "true";
   const flow4Enabled = process.env.NEXT_PUBLIC_FLOW4_ENABLED === "true";
   const flow5Enabled = process.env.NEXT_PUBLIC_FLOW5_ENABLED === "true";
+  const apiLabEnabled = process.env.NEXT_PUBLIC_API_LAB_ENABLED === "true";
 
   const [user, setUser] = useState<User | null>(null);
   const [apiState, setApiState] = useState<ApiState>({
@@ -349,10 +350,7 @@ export function Dashboard() {
 
       <section className="panel" data-testid="dashboard-command-center">
         <h2>Command Center</h2>
-        <p>
-          Launch guided modules, monitor the latest API activity, and keep advanced
-          API actions available under the lab section.
-        </p>
+        <p>Launch guided modules and monitor the latest API activity from one place.</p>
         <div className="dashboard-grid">
           <article className="cmd-card">
             <h3>Session Snapshot</h3>
@@ -425,46 +423,51 @@ export function Dashboard() {
         </Section>
       )}
 
-      <section className="panel" data-testid="dashboard-api-lab">
-        <h2>Advanced API Lab</h2>
-        <p>
-          All direct endpoint tools remain available for debugging and operator use.
-        </p>
+      {apiLabEnabled && (
+        <section className="panel" data-testid="dashboard-api-lab">
+          <h2>Advanced API Lab</h2>
+          <p>
+            All direct endpoint tools remain available for debugging and operator use.
+          </p>
 
-        <details className="details-lab" data-testid="dashboard-api-auth">
-          <summary>Auth APIs</summary>
-          <div className="details-lab-body">
-            <form className="grid-form" onSubmit={handleRegister}>
-              <input
-                placeholder="Name"
-                value={authForm.name}
-                onChange={(e) => setAuthForm((s) => ({ ...s, name: e.target.value }))}
-              />
-              <input
-                placeholder="Email"
-                type="email"
-                value={authForm.email}
-                onChange={(e) => setAuthForm((s) => ({ ...s, email: e.target.value }))}
-              />
-              <input
-                placeholder="Password (min 8)"
-                type="password"
-                value={authForm.password}
-                onChange={(e) =>
-                  setAuthForm((s) => ({ ...s, password: e.target.value }))
-                }
-              />
-              <div className="button-row">
-                <button type="submit" disabled={apiState.loading}>
-                  Register
-                </button>
-                <button type="button" onClick={handleLogin} disabled={apiState.loading}>
-                  Log in
-                </button>
-              </div>
-            </form>
-          </div>
-        </details>
+          <details className="details-lab" data-testid="dashboard-api-auth">
+            <summary>Auth APIs</summary>
+            <div className="details-lab-body">
+              <form className="grid-form" onSubmit={handleRegister}>
+                <input
+                  placeholder="Name"
+                  value={authForm.name}
+                  onChange={(e) =>
+                    setAuthForm((s) => ({ ...s, name: e.target.value }))
+                  }
+                />
+                <input
+                  placeholder="Email"
+                  type="email"
+                  value={authForm.email}
+                  onChange={(e) =>
+                    setAuthForm((s) => ({ ...s, email: e.target.value }))
+                  }
+                />
+                <input
+                  placeholder="Password (min 8)"
+                  type="password"
+                  value={authForm.password}
+                  onChange={(e) =>
+                    setAuthForm((s) => ({ ...s, password: e.target.value }))
+                  }
+                />
+                <div className="button-row">
+                  <button type="submit" disabled={apiState.loading}>
+                    Register
+                  </button>
+                  <button type="button" onClick={handleLogin} disabled={apiState.loading}>
+                    Log in
+                  </button>
+                </div>
+              </form>
+            </div>
+          </details>
 
         <details className="details-lab" data-testid="dashboard-api-flow1">
           <summary>Flow 1 Core APIs</summary>
@@ -769,7 +772,8 @@ export function Dashboard() {
             </details>
           </>
         )}
-      </section>
+        </section>
+      )}
     </div>
   );
 }

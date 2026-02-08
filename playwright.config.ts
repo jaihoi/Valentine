@@ -24,6 +24,8 @@ export default defineConfig({
       NEXT_PUBLIC_FLOW3_ENABLED: process.env.NEXT_PUBLIC_FLOW3_ENABLED ?? "false",
       NEXT_PUBLIC_FLOW4_ENABLED: process.env.NEXT_PUBLIC_FLOW4_ENABLED ?? "false",
       NEXT_PUBLIC_FLOW5_ENABLED: process.env.NEXT_PUBLIC_FLOW5_ENABLED ?? "false",
+      NEXT_PUBLIC_API_LAB_ENABLED:
+        process.env.NEXT_PUBLIC_API_LAB_ENABLED ?? "false",
     },
   },
   projects: [

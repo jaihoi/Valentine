@@ -1,5 +1,10 @@
 import { expect, test, type Page, type Route } from "@playwright/test";
 
+test.skip(
+  process.env.NEXT_PUBLIC_API_LAB_ENABLED !== "true",
+  "Dashboard API lab is hidden unless NEXT_PUBLIC_API_LAB_ENABLED=true.",
+);
+
 async function fulfillJson(route: Route, status: number, payload: unknown) {
   await route.fulfill({
     status,
