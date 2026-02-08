@@ -1,0 +1,15 @@
+# Test sources
+tests/
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Test artifacts
+playwright-report/
+test-results/
+coverage/
+
+# Local/dev docs and workflows
+docs/
+.github/

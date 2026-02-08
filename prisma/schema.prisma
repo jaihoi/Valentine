@@ -1,0 +1,218 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum GeneratedContentType {
+  LOVE_LETTER
+  SMS
+  CAPTION
+}
+
+enum CardStatus {
+  QUEUED
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum VoiceSessionStatus {
+  CREATED
+  ACTIVE
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id                  String               @id @default(cuid())
+  email               String               @unique
+  passwordHash        String
+  name                String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  partnerProfiles     PartnerProfile[]
+  preferenceProfiles  PreferenceProfile[]
+  datePlans           DatePlan[]
+  giftRecommendations GiftRecommendation[]
+  generatedContents   GeneratedContent[]
+  voiceAssets         VoiceAsset[]
+  memoryAssets        MemoryAsset[]
+  cardProjects        CardProject[]
+  voiceSessions       VoiceSession[]
+  usageEvents         UsageEvent[]
+  idempotencyRecords  IdempotencyRecord[]
+}
+
+model PartnerProfile {
+  id         String   @id @default(cuid())
+  userId     String
+  name       String
+  interests  Json
+  dislikes   Json?
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  datePlans  DatePlan[]
+  gifts      GiftRecommendation[]
+  sessions   VoiceSession[]
+  cards      CardProject[]
+}
+
+model PreferenceProfile {
+  id         String   @id @default(cuid())
+  userId     String
+  city       String?
+  budgetMin  Int?
+  budgetMax  Int?
+  vibe       String?
+  dietary    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model DatePlan {
+  id                String         @id @default(cuid())
+  userId            String
+  partnerProfileId  String?
+  city              String
+  budget            Int
+  vibe              String
+  dietary           String?
+  dateTime          DateTime?
+  itinerary         Json
+  venueOptions      Json
+  estimatedCost     Int
+  rationale         String
+  providerMeta      Json?
+  createdAt         DateTime       @default(now())
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  partnerProfile    PartnerProfile? @relation(fields: [partnerProfileId], references: [id], onDelete: SetNull)
+}
+
+model GiftRecommendation {
+  id                String          @id @default(cuid())
+  userId            String
+  partnerProfileId  String?
+  interests         Json
+  budget            Int
+  constraints       String?
+  recommendations   Json
+  explanation       String
+  links             Json
+  providerMeta      Json?
+  createdAt         DateTime        @default(now())
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  partnerProfile    PartnerProfile? @relation(fields: [partnerProfileId], references: [id], onDelete: SetNull)
+}
+
+model GeneratedContent {
+  id            String               @id @default(cuid())
+  userId        String
+  type          GeneratedContentType
+  tone          String?
+  length        String?
+  content       String
+  metadata      Json?
+  createdAt     DateTime             @default(now())
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VoiceAsset {
+  id               String   @id @default(cuid())
+  userId           String
+  sourceText       String
+  style            String?
+  provider         String
+  providerVoiceId  String?
+  audioUrl         String
+  cloudinaryId     String?
+  createdAt        DateTime @default(now())
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MemoryAsset {
+  id             String   @id @default(cuid())
+  userId         String
+  cloudinaryId   String
+  secureUrl      String
+  resourceType   String
+  metadata       Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cards          CardProject[]
+}
+
+model CardProject {
+  id             String      @id @default(cuid())
+  userId         String
+  partnerProfileId String?
+  templateId     String
+  messageText    String
+  musicOption    String?
+  status         CardStatus  @default(QUEUED)
+  previewUrl     String?
+  errorMessage   String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  partnerProfile PartnerProfile? @relation(fields: [partnerProfileId], references: [id], onDelete: SetNull)
+  assets         MemoryAsset[]
+
+  @@index([userId, createdAt])
+  @@index([userId, status, createdAt])
+}
+
+model VoiceSession {
+  id                String             @id @default(cuid())
+  userId            String
+  partnerProfileId  String?
+  scenario          String
+  providerSessionId String?
+  callLinkOrNumber  String?
+  status            VoiceSessionStatus @default(CREATED)
+  providerMeta      Json?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  partnerProfile    PartnerProfile?    @relation(fields: [partnerProfileId], references: [id], onDelete: SetNull)
+}
+
+model UsageEvent {
+  id          String   @id @default(cuid())
+  userId      String?
+  eventType   String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model IdempotencyRecord {
+  id            String   @id @default(cuid())
+  userId        String
+  endpoint      String
+  keyHash       String
+  statusCode    Int
+  responseBody  Json
+  createdAt     DateTime @default(now())
+  expiresAt     DateTime
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, endpoint, keyHash])
+}
+
+model WebhookEvent {
+  id          String   @id @default(cuid())
+  provider    String
+  eventId     String
+  payload     Json
+  receivedAt  DateTime @default(now())
+
+  @@unique([provider, eventId])
+}

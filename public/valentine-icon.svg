@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Valentine">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffd8d1" />
+      <stop offset="100%" stop-color="#ff9aa0" />
+    </linearGradient>
+    <linearGradient id="heart" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b0343f" />
+      <stop offset="100%" stop-color="#7e2028" />
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bg)" />
+  <path
+    d="M64 98c-1.4 0-2.8-.5-3.9-1.5C31 70.4 22 59.8 22 45.5 22 33.1 31.9 24 44.2 24c7.7 0 14.4 3.6 19.8 10.5C69.4 27.6 76.1 24 83.8 24 96.1 24 106 33.1 106 45.5c0 14.3-9 24.9-38.1 51-1.1 1-2.5 1.5-3.9 1.5Z"
+    fill="url(#heart)"
+  />
+</svg>
