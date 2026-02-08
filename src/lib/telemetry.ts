@@ -35,9 +35,13 @@ export async function trackEvent(
   properties: Record<string, unknown> = {},
 ) {
   if (!posthogClient) return;
-  await posthogClient.capture({
-    distinctId,
-    event,
-    properties,
-  });
+  try {
+    await posthogClient.capture({
+      distinctId,
+      event,
+      properties,
+    });
+  } catch (error) {
+    logger.warn({ error: String(error), event }, "Telemetry event capture failed");
+  }
 }

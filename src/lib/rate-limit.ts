@@ -109,15 +109,6 @@ async function ensureRedisReady(client: IORedis): Promise<boolean> {
   if (redisReadyPromise) return redisReadyPromise;
 
   redisReadyPromise = (async () => {
-    try {
-      // With lazyConnect enabled, we must explicitly connect before issuing commands.
-      if (client.status === "wait") {
-        void client.connect();
-      }
-    } catch {
-      // ignore and let readiness checks resolve false
-    }
-
     const timeoutMs = 1_500;
     return await new Promise<boolean>((resolve) => {
       let settled = false;
@@ -151,6 +142,11 @@ async function ensureRedisReady(client: IORedis): Promise<boolean> {
 
       client.on("ready", onReady);
       client.on("error", onError);
+
+      // With lazyConnect enabled, we must explicitly connect before issuing commands.
+      if (client.status === "wait") {
+        void client.connect().catch(() => settle(false));
+      }
     });
   })().finally(() => {
     redisReadyPromise = null;
@@ -183,7 +179,19 @@ function buildUnavailableResult(config: RateLimitConfig): RateLimitResult {
 }
 
 async function checkRateLimitRedis(config: RateLimitConfig) {
-  const client = await getRedisClientReady();
+  let client: IORedis | null = null;
+  try {
+    client = await getRedisClientReady();
+  } catch (error) {
+    if (!loggedRedisUnavailable) {
+      logger.error(
+        { error: String(error) },
+        "Redis rate limiter unavailable, evaluating fallback policy",
+      );
+      loggedRedisUnavailable = true;
+    }
+    return null;
+  }
   if (!client) return null;
 
   try {
