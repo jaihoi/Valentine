@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { env } from "@/lib/env";
-import { fail } from "@/lib/http";
+import { failWithCode } from "@/lib/http";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { trackEvent } from "@/lib/telemetry";
 
@@ -12,11 +12,22 @@ export async function requireUser(request: NextRequest) {
   if (!user) {
     return {
       user: null,
-      error: fail("Unauthorized", 401, undefined, {
-        request,
-        code: "AUTH_REQUIRED",
-        mutation: request.method.toUpperCase() !== "GET",
-      }),
+      error: failWithCode(
+        {
+          error: "Unauthorized",
+          code: "AUTH_REQUIRED",
+          retryable: false,
+        },
+        401,
+        {
+          request,
+          route: request.nextUrl.pathname,
+          userId: null,
+          code: "AUTH_REQUIRED",
+          retryable: false,
+          mutation: request.method.toUpperCase() !== "GET",
+        },
+      ),
     };
   }
   return { user };
@@ -54,26 +65,40 @@ export async function requireRateLimit(
           key,
         });
       }
-      return fail(
-        "Rate limiter unavailable",
+      return failWithCode(
+        {
+          error: "Service temporarily unavailable. Please try again.",
+          code: "RATE_LIMIT_UNAVAILABLE",
+          retryable: true,
+          details: {
+            resetAt: result.resetAt,
+            remaining: result.remaining,
+          },
+        },
         503,
         {
+          request,
+          route,
+          userId,
           code: "RATE_LIMIT_UNAVAILABLE",
-          resetAt: result.resetAt,
-          remaining: result.remaining,
+          retryable: true,
+          mutation: true,
         },
-        { request, route, userId, code: "RATE_LIMIT_UNAVAILABLE", mutation: true },
       );
     }
 
-    return fail(
-      "Rate limit exceeded",
-      429,
+    return failWithCode(
       {
-        resetAt: result.resetAt,
-        remaining: result.remaining,
+        error: "Too many requests. Please wait and try again.",
+        code: "RATE_LIMIT_EXCEEDED",
+        retryable: true,
+        details: {
+          resetAt: result.resetAt,
+          remaining: result.remaining,
+        },
       },
-      { request, route, userId, code: "RATE_LIMIT_EXCEEDED", mutation: true },
+      429,
+      { request, route, userId, code: "RATE_LIMIT_EXCEEDED", retryable: true, mutation: true },
     );
   }
   return null;

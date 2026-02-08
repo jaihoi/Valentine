@@ -17,7 +17,7 @@ test("dashboard command center shows flow launch links by flags", async ({ page 
     });
   });
 
-  await page.goto("/");
+  await page.goto("/dashboard");
 
   const launches = page.getByTestId("dashboard-flow-launches");
   await expect(page.getByTestId("dashboard-command-center")).toBeVisible();

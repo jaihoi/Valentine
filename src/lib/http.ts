@@ -77,7 +77,12 @@ export function fail(
     });
   }
 
-  const response = NextResponse.json({ error, details }, { status });
+  const body: ApiError = { error, details };
+  if (meta?.code) body.code = meta.code;
+  if (typeof meta?.retryable === "boolean") body.retryable = meta.retryable;
+  if (meta?.provider) body.provider = meta.provider;
+
+  const response = NextResponse.json(body, { status });
   return withRequestIdHeader(response, meta?.request);
 }
 

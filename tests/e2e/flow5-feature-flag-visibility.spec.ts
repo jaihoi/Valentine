@@ -22,9 +22,11 @@ test("flow5 links follow NEXT_PUBLIC_FLOW5_ENABLED flag", async ({ page }) => {
 
   if (flow5Enabled) {
     await expect(page.getByRole("link", { name: "Start Flow 5" })).toBeVisible();
+    await page.goto("/dashboard");
     await expect(page.getByRole("link", { name: "Open Flow 5 Wizard" })).toBeVisible();
   } else {
     await expect(page.getByRole("link", { name: "Start Flow 5" })).toHaveCount(0);
+    await page.goto("/dashboard");
     await expect(page.getByRole("link", { name: "Open Flow 5 Wizard" })).toHaveCount(
       0,
     );

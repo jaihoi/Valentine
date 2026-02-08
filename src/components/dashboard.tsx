@@ -56,7 +56,9 @@ export function Dashboard() {
   const flow3Enabled = process.env.NEXT_PUBLIC_FLOW3_ENABLED === "true";
   const flow4Enabled = process.env.NEXT_PUBLIC_FLOW4_ENABLED === "true";
   const flow5Enabled = process.env.NEXT_PUBLIC_FLOW5_ENABLED === "true";
-  const apiLabEnabled = process.env.NEXT_PUBLIC_API_LAB_ENABLED === "true";
+  const apiLabEnabled =
+    process.env.NODE_ENV !== "production" &&
+    process.env.NEXT_PUBLIC_API_LAB_ENABLED === "true";
 
   const [user, setUser] = useState<User | null>(null);
   const [apiState, setApiState] = useState<ApiState>({

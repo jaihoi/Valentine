@@ -5,7 +5,7 @@ import { FlowHeader } from "./FlowHeader";
 import { FlowStatus } from "./FlowStatus";
 
 describe("Flow UI kit", () => {
-  it("renders step badges and current step in header", () => {
+  it("renders compact progress and current step in header", () => {
     const html = renderToStaticMarkup(
       <FlowHeader
         eyebrow="Flow 1"
@@ -20,9 +20,10 @@ describe("Flow UI kit", () => {
       />,
     );
 
-    expect(html).toContain("flow-step active");
+    expect(html).toContain("Step 1 of 2");
+    expect(html).toContain("flow-progress-fill");
     expect(html).toContain("Signed in as: user@example.com");
-    expect(html).toContain("Current step: Auth");
+    expect(html).toContain("Auth");
   });
 
   it("renders typed error details with retry action", () => {

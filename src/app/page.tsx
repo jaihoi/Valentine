@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Dashboard } from "@/components/dashboard";
 
 export default function Home() {
   const flow1Only = process.env.NEXT_PUBLIC_FLOW1_ONLY === "true";
@@ -46,92 +45,40 @@ export default function Home() {
     },
   ] as const;
 
-  const enabledCount = modules.filter((module) => module.enabled).length;
   const visibleModules = flow1Only
     ? modules.filter((module) => module.id === "flow-1")
-    : modules;
+    : modules.filter((module) => module.enabled);
 
   return (
     <main className="app-shell">
       <section className="hero">
-        <p className="eyebrow">Love Concierge Platform</p>
-        <h1>Valentine AI Suite</h1>
+        <p className="eyebrow">Love Concierge</p>
+        <h1>Valentine</h1>
         <p className="hero-copy">
-          Multi-user web app for date planning, gift intelligence, voice content,
-          memory card generation, and live AI hotline sessions.
+          Pick a guided flow and complete one task at a time with clear steps and
+          saved history.
         </p>
-        <div className="hero-grid">
-          <article className="hero-stat">
-            <strong>{enabledCount} Active Flows</strong>
-            <span>Feature-flag aware launch matrix</span>
-          </article>
-          <article className="hero-stat">
-            <strong>Reliable Guided Flows</strong>
-            <span>Consistent planning, content, cards, and hotline experiences</span>
-          </article>
-          <article className="hero-stat">
-            <strong>Accounts + History</strong>
-            <span>Partner profiles and saved outputs across all modules</span>
-          </article>
-        </div>
-        <div className="button-row">
-          <Link className="flow-link-button" href="/flow-1">
-            Start Flow 1
-          </Link>
-          {flow2Enabled && (
-            <Link className="flow-link-button" href="/flow-2">
-              Start Flow 2
-            </Link>
-          )}
-          {flow3Enabled && (
-            <Link className="flow-link-button" href="/flow-3">
-              Start Flow 3
-            </Link>
-          )}
-          {flow4Enabled && (
-            <Link className="flow-link-button" href="/flow-4">
-              Start Flow 4
-            </Link>
-          )}
-          {flow5Enabled && (
-            <Link className="flow-link-button" href="/flow-5">
-              Start Flow 5
-            </Link>
-          )}
-        </div>
       </section>
-      <section className="panel" aria-label="Flow Launch Matrix">
-        <h2>Flow Launch Matrix</h2>
-        <p>
-          Module status reflects current environment flags and focused launch mode.
-        </p>
+      <section className="panel" aria-label="Flow Launches">
+        <h2>Choose Your Flow</h2>
+        <p>Start one guided module below.</p>
         <div className="module-grid">
           {visibleModules.map((module) => (
             <article key={module.id} className="module-card" data-testid={`home-module-${module.id}`}>
-              <span className={module.enabled ? "module-badge enabled" : "module-badge disabled"}>
-                {module.enabled ? "Enabled" : "Disabled"}
-              </span>
               <h3>{module.title}</h3>
               <p>{module.description}</p>
-              {module.enabled ? (
-                <Link className="flow-link-button" href={`/${module.id}`}>
-                  {module.cta}
-                </Link>
-              ) : (
-                <button type="button" disabled>
-                  {module.cta}
-                </button>
-              )}
+              <Link className="flow-link-button" href={`/${module.id}`}>
+                {module.cta}
+              </Link>
             </article>
           ))}
         </div>
         {flow1Only && (
           <p className="flow-note">
-            Focused mode is enabled. Dashboard shows only the current core flow.
+            Focused mode is enabled for Flow 1 only.
           </p>
         )}
       </section>
-      <Dashboard />
     </main>
   );
 }

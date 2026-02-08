@@ -22,9 +22,11 @@ test("flow3 links follow NEXT_PUBLIC_FLOW3_ENABLED flag", async ({ page }) => {
 
   if (flow3Enabled) {
     await expect(page.getByRole("link", { name: "Start Flow 3" })).toBeVisible();
+    await page.goto("/dashboard");
     await expect(page.getByRole("link", { name: "Open Flow 3 Wizard" })).toBeVisible();
   } else {
     await expect(page.getByRole("link", { name: "Start Flow 3" })).toHaveCount(0);
+    await page.goto("/dashboard");
     await expect(page.getByRole("link", { name: "Open Flow 3 Wizard" })).toHaveCount(
       0,
     );

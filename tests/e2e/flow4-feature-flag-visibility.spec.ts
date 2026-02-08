@@ -22,9 +22,11 @@ test("flow4 links follow NEXT_PUBLIC_FLOW4_ENABLED flag", async ({ page }) => {
 
   if (flow4Enabled) {
     await expect(page.getByRole("link", { name: "Start Flow 4" })).toBeVisible();
+    await page.goto("/dashboard");
     await expect(page.getByRole("link", { name: "Open Flow 4 Wizard" })).toBeVisible();
   } else {
     await expect(page.getByRole("link", { name: "Start Flow 4" })).toHaveCount(0);
+    await page.goto("/dashboard");
     await expect(page.getByRole("link", { name: "Open Flow 4 Wizard" })).toHaveCount(
       0,
     );

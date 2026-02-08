@@ -56,7 +56,7 @@ async function mockDashboardApiLab(page: Page) {
 
 test("advanced API lab stays accessible via details and submits a legacy action", async ({ page }) => {
   const state = await mockDashboardApiLab(page);
-  await page.goto("/");
+  await page.goto("/dashboard");
 
   const apiLab = page.getByTestId("dashboard-api-lab");
   await expect(apiLab).toBeVisible();
