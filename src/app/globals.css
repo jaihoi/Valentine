@@ -97,6 +97,10 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
+.hero .button-row {
+  margin-top: 1rem;
+}
+
 .hero-stat {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -171,6 +175,7 @@ a {
 .dashboard {
   display: grid;
   gap: 0.95rem;
+  margin-top: 0.7rem;
 }
 
 .status-banner {
