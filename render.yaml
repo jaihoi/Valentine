@@ -1,0 +1,72 @@
+services:
+  - type: web
+    name: valentine
+    env: node
+    plan: starter
+    autoDeploy: true
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health/ready
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_BASE_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: POSTHOG_API_KEY
+        sync: false
+      - key: POSTHOG_HOST
+        sync: false
+      - key: SENTRY_DSN
+        sync: false
+      - key: SENTRY_RELEASE
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: FASTROUTER_API_KEY
+        sync: false
+      - key: FASTROUTER_API_URL
+        sync: false
+      - key: FASTROUTER_MODEL
+        sync: false
+      - key: OPENAI_MODEL
+        sync: false
+      - key: PERPLEXITY_API_KEY
+        sync: false
+      - key: FIRECRAWL_API_KEY
+        sync: false
+      - key: DEEPGRAM_API_KEY
+        sync: false
+      - key: VAPI_API_KEY
+        sync: false
+      - key: VAPI_WEBHOOK_SECRET
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: ELEVENLABS_VOICE_ID
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: CLOUDINARY_WEBHOOK_SECRET
+        sync: false
+      - key: NEXT_PUBLIC_FLOW1_ONLY
+        sync: false
+      - key: NEXT_PUBLIC_FLOW2_ENABLED
+        sync: false
+      - key: NEXT_PUBLIC_FLOW3_ENABLED
+        sync: false
+      - key: NEXT_PUBLIC_FLOW4_ENABLED
+        sync: false
+      - key: NEXT_PUBLIC_FLOW5_ENABLED
+        sync: false
+      - key: NEXT_PUBLIC_API_LAB_ENABLED
+        sync: false
