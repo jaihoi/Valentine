@@ -50,8 +50,16 @@ export async function requireRateLimit(
     route?: string;
     userId?: string | null;
   },
+  options?: {
+    allowMemoryFallback?: boolean;
+  },
 ) {
-  const result = await checkRateLimit({ key, limit, windowMs });
+  const result = await checkRateLimit({
+    key,
+    limit,
+    windowMs,
+    allowMemoryFallback: options?.allowMemoryFallback,
+  });
   if (!result.allowed) {
     const request = context?.request;
     const route = context?.route;

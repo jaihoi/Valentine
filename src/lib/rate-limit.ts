@@ -27,6 +27,7 @@ export type RateLimitConfig = {
   limit: number;
   windowMs: number;
   key: string;
+  allowMemoryFallback?: boolean;
 };
 
 type RateLimitFailureReason = "limit_exceeded" | "limiter_unavailable";
@@ -236,7 +237,8 @@ async function checkRateLimitRedis(config: RateLimitConfig) {
   }
 }
 
-function shouldAllowMemoryFallback(): boolean {
+function shouldAllowMemoryFallback(config: RateLimitConfig): boolean {
+  if (config.allowMemoryFallback) return true;
   return env.NODE_ENV === "development" || env.NODE_ENV === "test";
 }
 
@@ -248,7 +250,7 @@ export async function checkRateLimit(
     return redisResult;
   }
 
-  if (shouldAllowMemoryFallback()) {
+  if (shouldAllowMemoryFallback(config)) {
     if (!loggedRedisFallback && env.REDIS_URL) {
       logger.warn(
         "Using in-memory rate limiting fallback. Configure Redis for durable limits.",

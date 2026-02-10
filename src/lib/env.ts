@@ -1,5 +1,19 @@
 import { z } from "zod";
 
+function sanitizeEnvValue(value: string | undefined): string | undefined {
+  if (value === undefined) return value;
+  const trimmed = value.trim();
+  const quoted = trimmed.match(/^["'](.+)["']$/);
+  return quoted ? quoted[1] : trimmed;
+}
+
+const sanitizedEnv = Object.fromEntries(
+  Object.entries(process.env).map(([key, value]) => [
+    key,
+    sanitizeEnvValue(value),
+  ]),
+);
+
 const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
@@ -38,7 +52,7 @@ const envSchema = z.object({
     .default("false"),
 });
 
-const parsedEnv = envSchema.parse(process.env);
+const parsedEnv = envSchema.parse(sanitizedEnv);
 
 const shouldEnforceProdChecks =
   parsedEnv.NODE_ENV === "production" &&

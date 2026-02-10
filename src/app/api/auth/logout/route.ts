@@ -8,11 +8,17 @@ import { ok } from "@/lib/http";
 
 export async function POST(request: NextRequest) {
   const identity = getRequestRateLimitIdentity(request);
-  const limited = await requireRateLimit(`auth-logout:${identity}`, 30, 60_000, {
-    request,
-    route: "/api/auth/logout",
-    userId: null,
-  });
+  const limited = await requireRateLimit(
+    `auth-logout:${identity}`,
+    30,
+    60_000,
+    {
+      request,
+      route: "/api/auth/logout",
+      userId: null,
+    },
+    { allowMemoryFallback: true },
+  );
   if (limited) return limited;
 
   await clearSessionCookie();

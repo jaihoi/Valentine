@@ -11,11 +11,17 @@ import { fail, ok, parseJson } from "@/lib/http";
 export async function POST(request: NextRequest) {
   const ENDPOINT = "/api/auth/register";
   const identity = getRequestRateLimitIdentity(request);
-  const limited = await requireRateLimit(`auth-register:${identity}`, 5, 60_000, {
-    request,
-    route: ENDPOINT,
-    userId: null,
-  });
+  const limited = await requireRateLimit(
+    `auth-register:${identity}`,
+    5,
+    60_000,
+    {
+      request,
+      route: ENDPOINT,
+      userId: null,
+    },
+    { allowMemoryFallback: true },
+  );
   if (limited) return limited;
 
   const parsed = await parseJson(request, registerSchema);

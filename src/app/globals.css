@@ -123,6 +123,7 @@ a {
   display: grid;
   gap: 0.9rem;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 0.4rem;
 }
 
 .module-card {
@@ -174,7 +175,7 @@ a {
 
 .dashboard {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.7rem;
   margin-top: 0.7rem;
 }
 
