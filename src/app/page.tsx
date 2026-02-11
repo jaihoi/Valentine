@@ -58,6 +58,14 @@ export default function Home() {
           Pick a guided flow and complete one task at a time with clear steps and
           saved history.
         </p>
+        <div className="button-row">
+          <Link className="flow-link-button" href="/register">
+            Create Account
+          </Link>
+          <Link className="flow-link-button secondary" href="/login">
+            Sign In
+          </Link>
+        </div>
       </section>
       <section className="panel" aria-label="Flow Launches">
         <h2>Choose Your Flow</h2>

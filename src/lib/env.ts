@@ -61,18 +61,27 @@ const shouldEnforceProdChecks =
 
 if (shouldEnforceProdChecks) {
   const missing: string[] = [];
+  const warnings: string[] = [];
 
   if (!parsedEnv.DATABASE_URL) missing.push("DATABASE_URL");
   if (!parsedEnv.APP_BASE_URL) missing.push("APP_BASE_URL");
-  if (!parsedEnv.REDIS_URL) missing.push("REDIS_URL");
-  if (!parsedEnv.POSTHOG_API_KEY) missing.push("POSTHOG_API_KEY");
-  if (!parsedEnv.VAPI_WEBHOOK_SECRET) missing.push("VAPI_WEBHOOK_SECRET");
-  if (!parsedEnv.CLOUDINARY_WEBHOOK_SECRET) {
-    missing.push("CLOUDINARY_WEBHOOK_SECRET");
-  }
 
   if (parsedEnv.JWT_SECRET === "unsafe-dev-secret") {
     missing.push("JWT_SECRET (must not use default)");
+  }
+
+  // Non-critical: warn but don't crash
+  if (!parsedEnv.REDIS_URL) warnings.push("REDIS_URL");
+  if (!parsedEnv.POSTHOG_API_KEY) warnings.push("POSTHOG_API_KEY");
+  if (!parsedEnv.VAPI_WEBHOOK_SECRET) warnings.push("VAPI_WEBHOOK_SECRET");
+  if (!parsedEnv.CLOUDINARY_WEBHOOK_SECRET) {
+    warnings.push("CLOUDINARY_WEBHOOK_SECRET");
+  }
+
+  if (warnings.length > 0) {
+    console.warn(
+      `Optional production environment variables not set: ${warnings.join(", ")}. Related features may be unavailable.`,
+    );
   }
 
   if (missing.length > 0) {
